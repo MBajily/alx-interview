@@ -10,10 +10,10 @@ if (!movieId) {
   process.exit(1);
 }
 
-const BASE_URL = 'https://swapi.dev/api';
+const baseURL = 'https://swapi.dev/api';
 
 // Function to make HTTP request as Promise
-function makeRequest(url) {
+function makeRequest (url) {
   return new Promise((resolve, reject) => {
     request(url, (error, response, body) => {
       if (error) {
@@ -26,7 +26,7 @@ function makeRequest(url) {
 }
 
 // Function to get character name from URL
-async function getCharacterName(url) {
+async function getCharacterName (url) {
   try {
     const character = await makeRequest(url);
     return character.name;
@@ -37,15 +37,15 @@ async function getCharacterName(url) {
 }
 
 // Main function to get and print all characters
-async function printMovieCharacters(movieId) {
+async function printMovieCharacters (movieId) {
   try {
     // Get movie data
-    const movie = await makeRequest(`${BASE_URL}/films/${movieId}/`);
-    
+    const movie = await makeRequest(`${baseURL}/films/${movieId}/`);
+
     // Get all character names in order
     const characterPromises = movie.characters.map(url => getCharacterName(url));
     const names = await Promise.all(characterPromises);
-    
+
     // Print names (filtering out any null values from errors)
     names.filter(name => name !== null).forEach(name => console.log(name));
   } catch (error) {
